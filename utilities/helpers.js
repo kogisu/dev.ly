@@ -11,6 +11,18 @@ module.exports = {
           resolve(hash);
         });;
       });
-    })
+    });
+  },
+  checkPassword: function(password, userPass) {
+    return new Promise((resolve) => {
+      bcrypt.compare(password, userPass)
+        .then(isMatch => {
+          if (isMatch) {
+            resolve({msg: 'Success'});
+          } else {
+            resolve({password: 'Password incorrect'});
+          }
+        });
+    });
   }
 }
