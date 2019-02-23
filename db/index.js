@@ -28,6 +28,16 @@ module.exports = {
         } catch(err) {
             return `error occured in getting users from db: ${err}`;
         }
+    },
+    createUser: async function(userData) {
+        const {name, email, password, avatar} = userData;
+        const queryStr = `INSERT into users(name, email, password, avatar, date) VALUES ($1,$2,$3,$4,$5);`;
+        try {
+            const res = await client.query(queryStr, [name, email, password, avatar, 'NOW()']);
+            return res;
+        } catch(err) {
+            return `error occured in posting user to db: ${err}`;
+        }
     }
 }
 

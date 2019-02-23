@@ -1,5 +1,5 @@
 const app = require('./bin/www');
-
+const bodyParser = require('body-parser');
 const users = require('../routes/api/users');
 const profile = require('../routes/api/profile');
 const posts = require('../routes/api/posts');
@@ -7,6 +7,10 @@ const posts = require('../routes/api/posts');
 if (process.env.NODE_ENV === 'development') {
   require('dotenv').config();
 }
+
+//Body parser middleware
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   res.send('hello');
