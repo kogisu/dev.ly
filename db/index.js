@@ -24,7 +24,7 @@ module.exports = {
     getAllUsers: async function() {
         try {
             const res = await client.query('SELECT * from users', []);
-            return res;
+            return res.rows;
         } catch(err) {
             return `error occured in getting users from db: ${err}`;
         }
@@ -38,6 +38,15 @@ module.exports = {
         } catch(err) {
             return `error occured in posting user to db: ${err}`;
         }
-    }
+    },
+    findUser: async function(userData) {
+        const queryStr = `SELECT * from users where email='${userData.email}'`;
+        try {
+            const res = await client.query(queryStr, []);
+            return res.rows;
+        } catch(err) {
+            return `error occured in finding user: ${err}`;
+        }
+    },
 }
 
