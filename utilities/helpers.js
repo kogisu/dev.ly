@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const config = require('../server/config');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
   encryptPassword: function(password) {
@@ -13,12 +15,30 @@ module.exports = {
       });
     });
   },
-  checkPassword: function(password, userPass) {
+  checkPassword: function(password, user) {
+    const userPass = user.password;
     return new Promise((resolve) => {
       bcrypt.compare(password, userPass)
         .then(isMatch => {
           if (isMatch) {
-            resolve({msg: 'Success'});
+            const payload = {
+              id: user.id,
+              name: user.name,
+              avatar: user.avatar
+            };
+            jwt.sign(
+              payload, 
+              config.SECRET, 
+              { expiresIn: 3600}, 
+              (err, token) => {
+                if (err) {
+                  reject(`error occured in getting jwt: ${err}`);
+                }
+                resolve({
+                  success: true,
+                  token: 'Bearer ' + token
+                });
+            });
           } else {
             resolve({password: 'Password incorrect'});
           }

@@ -55,7 +55,7 @@ router.post('/login', async (req, res) => {
     if (!user.length) {
       return res.status(404).json({email: 'User not found'});
     }
-    const msg = await utils.checkPassword(userData.password, user[0].password);
+    const msg = await utils.checkPassword(userData.password, user[0]);
     if (msg.msg) {
       res.json(msg);
     } else {
