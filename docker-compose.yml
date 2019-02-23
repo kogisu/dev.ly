@@ -1,0 +1,27 @@
+#Docker-compose.yml (production)
+version: '3'
+services:
+  web:
+    build: .
+    image: devconnector
+    environment:
+      - PORT=5000
+      - HOST=db
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=5432
+    depends_on: 
+      - db
+    ports:
+      - "5000:5000"
+    command: ["./wait-for-it.sh", "db:5432", "--", "npm", "run", "start"]
+  
+  db:
+    image: postgres
+    ports: 
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./tmp:/docker-entrypoint-initdb.d

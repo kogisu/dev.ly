@@ -1,0 +1,27 @@
+{
+  "name": "devconnector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production node server/app.js",
+    "dev-server": "NODE_ENV=development nodemon --inspect=0.0.0.0 server/app.js"
+  },
+  "author": "Kent Ogisu",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.5.0",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "pg": "^7.8.1",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "dotenv": "^6.2.0",
+    "nodemon": "^1.18.10"
+  }
+}
