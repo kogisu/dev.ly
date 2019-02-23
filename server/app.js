@@ -11,3 +11,10 @@ if (process.env.NODE_ENV === 'development') {
 app.get('/', (req, res) => {
   res.send('hello');
 });
+
+
+// Use routes
+app.use('/api/users', users);
+app.use('/api/profile', profile);
+app.use('/api/posts', posts);
+
