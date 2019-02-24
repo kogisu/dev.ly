@@ -26,7 +26,7 @@ module.exports = {
             const res = await client.query(queryStr, vals);
             return res.rows;
         } catch(err) {
-            return `error occured in querying db`;
+            return `error occured in querying db: ${err}`;
         }
     },
     getAllUsers: async function() {

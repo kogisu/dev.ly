@@ -5,6 +5,10 @@ const db = require('../../db');
 const utils = require('../../utilities/helpers');
 const router = express.Router();
 
+//Load Input Validation
+const validateRegisterInput = require('../../validation/register');
+const validateLoginInput = require('../../validation/login');
+
 // @route GET api/users
 // @desc users route
 // @access Public
@@ -19,6 +23,13 @@ router.get('/', async (req, res) => {
 // @desc users route
 // @access Public
 router.post('/register', async (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
   const userData = Object.assign({}, req.body);
   try {
     const existingUser = await db.findUser(userData);
@@ -49,21 +60,29 @@ router.post('/register', async (req, res) => {
 // @desc Login user / Returning JWT Token
 // @access Public
 router.post('/login', async (req, res) => {
+  const { errors, isValid } = validateLoginInput(req.body);
   const userData = req.body;
+
+  // Check validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
   try {
     const user = await db.findUser(userData);
     if (!user.length) {
-      return res.status(404).json({email: 'User not found'});
+      errors.email = 'User not found';
+      return res.status(404).json(errors);
     }
     const msg = await utils.checkPassword(userData.password, user[0]);
-    if (msg.msg) {
+    if (msg.success) {
       res.json(msg);
     } else {
-      res.status(400).json(msg);
+      errors.password = 'Password incorrect';
+      res.status(400).json(errors);
     }
   } catch(err) {
     console.log(err);
-    res.status(400).json({email: 'User not found'});
+    res.status(400).json(errors);
   }
 
   // @route POST api/users/current
