@@ -1,6 +1,6 @@
 const express = require('express');
 const gravatar = require('gravatar');
-const bcrypt = require('bcryptjs');
+const passport = require('passport');
 const db = require('../../db');
 const utils = require('../../utilities/helpers');
 const router = express.Router();
@@ -66,8 +66,17 @@ router.post('/login', async (req, res) => {
     res.status(400).json({email: 'User not found'});
   }
 
-  // @route POST api/users/login
-  // @desc users route
-  // @access Public
+  // @route POST api/users/current
+  // @desc Return current user
+  // @access Private
+  router.get('/current', 
+    passport.authenticate('jwt', { session: false }), 
+    (req, res) => {
+      res.json({
+        id: req.user.id,
+        name: req.user.name,
+        email: req.user.email
+      });
+  });
 });
 module.exports = router;

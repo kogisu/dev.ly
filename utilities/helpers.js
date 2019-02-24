@@ -26,6 +26,8 @@ module.exports = {
               name: user.name,
               avatar: user.avatar
             };
+
+            //Sign Token
             jwt.sign(
               payload, 
               config.SECRET, 

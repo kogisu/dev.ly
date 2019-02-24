@@ -21,6 +21,14 @@ client.connect(err => {
 });
 
 module.exports = {
+    queryDB: async function(queryStr, vals) {
+        try {
+            const res = await client.query(queryStr, vals);
+            return res.rows;
+        } catch(err) {
+            return `error occured in querying db`;
+        }
+    },
     getAllUsers: async function() {
         try {
             const res = await client.query('SELECT * from users', []);
@@ -47,6 +55,6 @@ module.exports = {
         } catch(err) {
             return `error occured in finding user: ${err}`;
         }
-    },
+    }
 }
 
