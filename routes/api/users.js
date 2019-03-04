@@ -1,7 +1,7 @@
 const express = require('express');
 const gravatar = require('gravatar');
 const passport = require('passport');
-const db = require('../../db');
+const db = require('../../db/queries');
 const utils = require('../../utilities/helpers');
 const router = express.Router();
 
